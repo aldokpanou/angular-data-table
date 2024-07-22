@@ -1,0 +1,44 @@
+.dropdown {
+    display: none;
+}
+.dropdown.active {
+    display: block;
+}
+.dropdown-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+.dropdown-button:focus + .dropdown-menu,
+.dropdown-menu:hover {
+    display: block;
+}
+
+.filter-btn {
+    transition: color 0.3s, border-bottom 0.3s;
+  }
+  
+  .filter-btn.active {
+    border-bottom: 2px solid #25213B;
+    color: #25213B;
+    font-weight: bold;
+  }
+  
+  .filter-btn:focus {
+    outline: none;
+  }
+  
+  .filter-btn:hover {
+    border-bottom: 2px solid #25213B;
+    color: #25213B;
+  }
+  

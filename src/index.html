@@ -5,9 +5,57 @@
   <title>Datatable</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    * {
+        font-family: 'Inter', sans-serif;
+    }
+
+    .dropdown-menu {
+        display: none;
+    }
+
+    .dropdown-menu.active {
+        display: block;
+    }
+
+    .hidden {
+    display: none;
+    }
+
+    
+
+    /* .description-row {
+        display: none;
+    } */
+</style>
 </head>
-<body>
+<body class="bg-primary-color">
   <app-root></app-root>
 </body>
+<script>
+  document.querySelectorAll('.dropdown-button').forEach(button => {
+      button.addEventListener('click', () => {
+          const dropdown = button.nextElementSibling;
+          dropdown.classList.toggle('active');
+      });
+  });
+
+  // document.querySelectorAll('.clickable-row').forEach(row => {
+  //     row.addEventListener('click', () => {
+  //         const descriptionId = row.getAttribute('data-description-id');
+  //         const descriptionRow = document.getElementById(descriptionId);
+  //         descriptionRow.classList.toggle('description-row');
+  //     });
+  // });
+
+  document.querySelectorAll('.clickable-row').forEach(row => {
+        row.addEventListener('click', () => {
+            const descriptionId = row.getAttribute('data-description-id');
+            const descriptionRow = document.getElementById(descriptionId);
+            descriptionRow.classList.toggle('hidden');
+        });
+    });
+</script>
 </html>

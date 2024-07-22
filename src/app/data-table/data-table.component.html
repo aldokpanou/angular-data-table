@@ -1,0 +1,227 @@
+
+<section class="mx-auto max-w-screen-xl px-2">
+  <div>
+    <div class="py-10">
+        <div class="flex pb-2 mb-4">
+            <h2 class="text-xs font-bold text-[#6E6893]">TABLE HEADING</h2>
+        </div>
+        <div class="flex border-b justify-between items-center  border-[#C6C2DE]">
+            <div class="flex space-x-4">
+              <button class="filter-btn font-medium focus:outline-none" (click)="setFilterStatus('all')" [class.active]="filterStatus === 'all'">All</button>
+              <button class="filter-btn pb-1 text-[#6E6893] font-medium focus:outline-none hover:border-b-2 hover:border-[#25213B] hover:text-[#25213B]" (click)="setFilterStatus('paid')" [class.active]="filterStatus === 'paid'">Paid</button>
+              <button class="filter-btn pb-1 text-[#6E6893] font-medium focus:outline-none hover:border-b-2 hover:border-[#25213B] hover:text-[#25213B]" (click)="setFilterStatus('overdue')" [class.active]="filterStatus === 'overdue'">Unpaid</button>
+              <button class="filter-btn pb-1 text-[#6E6893] font-medium focus:outline-none hover:border-b-2 hover:border-[#25213B] hover:text-[#25213B]" (click)="setFilterStatus('pending')" [class.active]="filterStatus === 'pending'">Overdue</button>
+            </div>
+            <div class="text-sm font-medium text-[#6E6893]">
+              Total payable amount: <span class="text-[#6D5BD0] font-bold">$900.00</span> <span class="text-[#6E6893] font-medium text-xl"> USD</span>
+          </div>
+        </div>
+    </div>
+</div>
+
+  <div class="container mx-auto bg-white pt-4 rounded-lg shadow-lg">
+    <div class="flex items-center justify-between p-2 bg-white rounded-md  relative mb-5">
+      <button id="filterButton" class="flex items-center border border-[#C6C2DE] px-4 py-2 rounded-md hover:bg-gray-300"  (click)="toggleDropdown()">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="pr-1">
+            <g clip-path="url(#clip0_458_2421)">
+            <path d="M12 12L20 4V0H0V4L8 12V20L12 16V12Z" fill="#8B83BA"/>
+            </g>
+            <defs>
+            <clipPath id="clip0_458_2421">
+            <rect width="20" height="20" fill="white"/>
+            </clipPath>
+            </defs>
+            </svg>
+            
+          Filter
+      </button>
+       <!-- Menu déroulant -->
+      <div *ngIf="isDropdownOpen" class="absolute mt-96 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+        <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="filterButton">
+          <div class="px-4 py-2 text-sm text-gray-700">SORT BY:</div>
+          <label class="block px-4 py-2 text-sm text-gray-700 cursor-pointer">
+            <input type="radio" name="sort" value="default" (change)="sortBy('default')" class="mr-2"> Default
+          </label>
+          <label class="block px-4 py-2 text-sm text-gray-700 cursor-pointer">
+            <input type="radio" name="sort" value="firstName" (change)="sortBy('firstName')" class="mr-2"> First Name
+          </label>
+          <label class="block px-4 py-2 text-sm text-gray-700 cursor-pointer">
+            <input type="radio" name="sort" value="lastName" (change)="sortBy('lastName')" class="mr-2"> Last Name
+          </label>
+          <label class="block px-4 py-2 text-sm text-gray-700 cursor-pointer">
+            <input type="radio" name="sort" value="dueDate" (change)="sortBy('dueDate')" class="mr-2"> Due Date
+          </label>
+          <label class="block px-4 py-2 text-sm text-gray-700 cursor-pointer">
+            <input type="radio" name="sort" value="lastLogin" (change)="sortBy('lastLogin')" class="mr-2"> Last Login
+          </label>
+          <div class="px-4 py-2 text-sm text-gray-700">USERS:</div>
+          <label class="block px-4 py-2 text-sm text-gray-700 cursor-pointer">
+            <input type="radio" name="user" value="all" (change)="filterUsers('all')" class="mr-2"> All
+          </label>
+          <label class="block px-4 py-2 text-sm text-gray-700 cursor-pointer">
+            <input type="radio" name="user" value="active" (change)="filterUsers('active')" class="mr-2"> Active
+          </label>
+          <label class="block px-4 py-2 text-sm text-gray-700 cursor-pointer">
+            <input type="radio" name="user" value="inactive" (change)="filterUsers('inactive')" class="mr-2"> Inactive
+          </label>
+        </div>
+      </div>
+      <input type="text" [formControl]="searchTerm" placeholder="Search Users by Name, Email or Date" class="flex-grow px-4 py-2 ml-4 border font-medium text-[#6E6893] rounded-md focus:outline-none focus:ring-2 focus:ring-[#6D5BD0] bg-secondary-color">
+      <button class="ml-4 px-4 py-2 bg-[#6D5BD0] text-white rounded-md hover:bg-purple-700 font-semibold">
+          PAY DUES
+      </button>
+  </div>
+  
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-thead-color">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <input type="checkbox" class="form-checkbox h-4 w-4">
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-[#6E6893] uppercase tracking-wider"></th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-[#6E6893] uppercase tracking-wider">Name</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-[#6E6893] uppercase tracking-wider">User Status</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-[#6E6893] uppercase tracking-wider">Payment Status</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-[#6E6893] uppercase tracking-wider">Amount</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-[#6E6893] uppercase tracking-wider">Action</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-[#6E6893] uppercase tracking-wider"></th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <ng-container *ngFor="let data of filteredDataForCurrentPage">
+            <tr class="" [ngClass]="{'bg-thead-color': data.showDescription}">
+              <td class=" px-6 py-4 whitespace-nowrap">
+                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600">
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <svg class="clickable-row cursor-pointer" (click)="toggleDescription(data.id)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 9l6 6 6-6" stroke="#8B83BA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ data.name }}</div>
+                <div class="text-sm text-gray-500">{{ data.email }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div [ngSwitch]="data.status">
+                  <div *ngSwitchCase="'Active'" class="px-2 inline-flex items-center  text-xs leading-5 font-semibold rounded-full bg-[#E6E6F2] text-[#4A4AFF]">
+                    <span class="w-2 h-2 bg-[#4A4AFF] rounded-full mr-2"></span>
+                    Active
+                  </div>
+                  <div *ngSwitchCase="'Inactive'" class="px-2 inline-flex items-center text-xs leading-5 font-semibold rounded-full  bg-[#F2F0F9] text-[#6E6893]">
+                    <span class="w-2 h-2 bg-[#6E6893] rounded-full mr-2"></span>
+                    Inactive
+                  </div>
+                </div>
+                <div class="text-sm text-gray-500">Last login: {{ data.lastLogin }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div [ngSwitch]="data.paymentStatus">
+                  <div *ngSwitchCase="'Pending'" class="px-2 inline-flex items-center text-xs leading-5 font-semibold rounded-full bg-[#FFE0E0] text-[#D30000]">
+                    <span class="w-2 h-2 bg-[#D30000] rounded-full mr-2"></span>
+                    Overdue
+                  </div>
+                  <div *ngSwitchCase="'Paid'" class="px-2 inline-flex items-center text-xs leading-5 font-semibold rounded-full bg-[#CDFFCD] text-[#007F00]">
+                    <span class="w-2 h-2 bg-[#007F00] rounded-full mr-2"></span>
+                    Paid
+                  </div>
+                  <div *ngSwitchCase="'Overdue'" class="px-2 inline-flex items-center text-xs leading-5 font-semibold rounded-full bg-[#FFECCC] text-[#CE8500]">
+                    <span class="w-2 h-2 bg-[#965E00] rounded-full mr-2"></span>
+                    Unpaid
+                  </div>
+                </div>
+                <div class="text-sm text-gray-500">Due on {{ data.dueDate }}</div>
+              </td>
+              
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ data.amount }} {{ data.currency }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">View More</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <div class="relative">
+                  <button class="dropdown-button px-4 py-2 text-white rounded focus:outline-none focus:ring-2 focus:ring-[#6D5BD0] focus:border-transparent">
+                    <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#8B83BA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="5" r="2"/>
+                      <circle cx="12" cy="12" r="2"/>
+                      <circle cx="12" cy="19" r="2"/>
+                    </svg>
+                  </button>
+                  <div class="dropdown-menu absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg">
+                    <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Edit</a>
+                    <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">View Profile</a>
+                    <a href="#" class="block px-4 py-2 text-green-700 hover:bg-green-100">Activate User</a>
+                    <a href="#" class="block px-4 py-2 text-red-700 hover:bg-red-100">Delete</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr id="description-{{ data.id }}" class="description-row" style="border: none;" [ngClass]="{'bg-thead-color': data.showDescription}">
+              <td colspan="12" class="px-6" [ngClass]="{'py-4': data.showDescription}">
+                <ng-container *ngIf="data.showDescription">
+                  <table class="min-w-full bg-white border border-gray-300">
+                    <thead class="bg-tbody-color">
+                      <tr>
+                        <th class="px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                        <th class="px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User Activity</th>
+                        <th class="px-6 py-3 border-b border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Detail</th>
+                      </tr>
+                    </thead>
+                    <tbody class="bg-thead-color">
+                      <ng-container *ngIf="data.activities.length > 0; else noRecords">
+                        <tr *ngFor="let activity of data.activities">
+                          <td class="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{{ activity.date }}</td>
+                          <td class="px-6 py-4 border-b border-gray-200">{{ activity.activity }}</td>
+                          <td class="px-6 py-4 border-b border-gray-200">{{ activity.detail }}</td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                </ng-container>
+                <ng-template #noRecords>
+                  <tr>
+                    <td class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"></td>
+                    <td class="px-6 py-4 border-b border-gray-200 whitespace-nowrap">No records found</td>
+                    <td class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"></td>
+                  </tr>
+                </ng-template>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <div class="flex items-center justify-end p-2 bg-secondary-color text-[#6E6893] text-xs font-semibold rounded-md shadow-md mt-4">
+        <div class="flex items-center mr-4">
+            <span>Rows per page:</span>
+            <select (change)="updatePageSize($event)" class="ml-2 bg-transparent focus:outline-none">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+            </select>
+        </div>
+        <div class="mr-4">
+          <span>{{(currentPage - 1) * pageSize + 1}}-{{currentPage * pageSize}} of {{datas.length}}</span>
+        </div>
+        <div class="flex items-center">
+            <button (click)="previousPage()" [disabled]="currentPage === 1" class="focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12.707 14.707a1 1 0 01-1.414 0L7.293 10.707a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L9.414 10l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            <button (click)="nextPage()" [disabled]="(currentPage * pageSize) >= datas.length" class="ml-2 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </div>
+     </div>
+    </div>
+  </div>
+  
+</section>
+
+<script>
+  document.getElementById('filterButton').addEventListener('click', function() {
+      var dropdown = document.getElementById('dropdownMenu');
+      dropdown.classList.toggle('active');
+  });
+</script>
